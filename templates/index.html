@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Places</h2>
+    <form method="POST" action="{% url 'index' %}">
+        {% csrf_token %}
+        <label for="name">Your Name:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Submit</button>
+    </form>
+    <ul>
+        {% for i in places %}
+        <li>{{i}}</li>
+        <li>{{i.City}}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
