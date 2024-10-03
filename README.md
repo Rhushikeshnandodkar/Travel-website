@@ -34,5 +34,5 @@ To set up this project locally, follow these steps:
 
    ```bash
  git clone https://github.com/yourusername/must-see-places-india](https://github.com/Rhushikeshnandodkar/Travel-website).git
-   cd Travel website
+ ```bash
    
