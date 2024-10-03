@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>{{single_place.Name}}</h3>
+    <h4>recommended places</h4>
+    <ul>
+        {% for i in rec_places %}
+            <li>{{i.Name}}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

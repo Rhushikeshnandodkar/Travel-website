@@ -15,8 +15,8 @@
     </form>
     <ul>
         {% for i in places %}
-        <li>{{i}}</li>
-        <li>{{i.City}}</li>
+        <li><a href="{% url 'details' i.id %}">{{i.Name}}</a></li>
+       
         {% endfor %}
     </ul>
 </body>
