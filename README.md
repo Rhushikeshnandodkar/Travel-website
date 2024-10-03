@@ -26,13 +26,5 @@ Welcome to the **Must See Places of India** travel website! This project showcas
 - **Machine Learning**: Python (with libraries such as scikit-learn for cosine similarity)
 - **Database**: SQLite (or any other database of your choice)
 
-## Installation
 
-To set up this project locally, follow these steps:
 
-1. **Clone the repository**:
-
-   ```bash
- git clone https://github.com/yourusername/must-see-places-india](https://github.com/Rhushikeshnandodkar/Travel-website).git
- ```bash
-   
