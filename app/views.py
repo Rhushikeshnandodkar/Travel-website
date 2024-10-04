@@ -6,6 +6,9 @@ import os
 from django.conf import settings
 # Create your views here.
 def index(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        places = PlaceMode.objects.filter(Name=name)
     places = PlaceMode.objects.all()
     return render(request, 'index.html', {"places" : places})
 
