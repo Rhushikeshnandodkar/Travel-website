@@ -7,10 +7,7 @@
 </head>
 <body>
     <h2>Places</h2>
-    <form method="get" action="search">
-        <input type="text" name="q" placeholder="Enter your search" value="{{ query }}">
-        <button type="submit">Search</button>
-    </form>
+
     <ul>
         {% for i in places %}
         <li><a href="{% url 'details' i.id %}">{{i.Name}}</a></li>

@@ -6,9 +6,8 @@ import os
 from django.conf import settings
 # Create your views here.
 def index(request):
-    if request.method == 'POST':
-        name = request.POST.get("name")
-        places = PlaceMode.objects.filter(Name=name)
+    # query = request.GET.get('q')
+    # print(query)    
     places = PlaceMode.objects.all()
     return render(request, 'index.html', {"places" : places})
 
@@ -27,3 +26,16 @@ def details(request, pk):
     for i in places_list:
         recommended_places.append(PlaceMode.objects.get(id=i[0]))
     return render(request, 'details.html', {"rec_places" : recommended_places, 'single_place' : place})
+
+def search_view(request):
+    query = request.GET.get('q')
+    results = []
+
+    if query:
+        results = PlaceMode.objects.filter(
+            models.Q(Name__icontains=query) |
+            models.Q(City__icontains=query) |
+            models.Q(Significance__icontains=query)
+        )
+
+    return render(request, 'search.html', {'places': results, 'query': query})
