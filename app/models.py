@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 class PlaceMode(models.Model):
     place_id = models.IntegerField(null=True, blank=True)
@@ -18,6 +18,16 @@ class PlaceMode(models.Model):
 
     def __str__(self):
         return self.Name
+
+class Profile(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    you_City = models.CharField(max_length=200, null=True, blank=True)
+    you_State = models.CharField(max_length=200, null=True, blank=True)
+    fav_type = models.CharField(max_length=200, null=True, blank=True)
+    fav_significance  = models.CharField(max_length=200, null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username
 
 
 
