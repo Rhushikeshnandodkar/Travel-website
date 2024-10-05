@@ -1,15 +1,17 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 import pandas as pd
 import pickle
 import os
 from django.conf import settings
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 # Create your views here.
+
 def index(request):
-    # query = request.GET.get('q')
-    # print(query)    
+    user = request.user
     places = PlaceMode.objects.all()
-    return render(request, 'index.html', {"places" : places})
+    return render(request, 'index.html', {"places" : places, 'user': user})
 
 def details(request, pk):
     place = PlaceMode.objects.get(id=pk)
@@ -39,3 +41,40 @@ def search_view(request):
         )
 
     return render(request, 'search.html', {'places': results, 'query': query})
+
+
+def signup_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+        
+        if password1 == password2:
+            user = User.objects.create_user(username=username, email=email, password=password1)
+            user.save()
+            return redirect('login')
+        else:
+            return render(request, 'signup.html', {'error': 'Passwords do not match'})
+    
+    return render(request, 'signup.html')
+
+# Login View
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            return redirect('index')  # Replace 'home' with your desired redirect URL
+        else:
+            return render(request, 'login.html', {'error': 'Invalid credentials'})
+    
+    return render(request, 'login.html')
+
+# Logout View
+def logout_view(request):
+    logout(request)
+    return redirect('login')

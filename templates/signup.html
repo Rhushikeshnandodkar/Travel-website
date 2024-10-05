@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signup</title>
+    {% comment %} <link rel="stylesheet" href="{% static 'your_css_file.css' %}"> {% endcomment %}
+</head>
+<body>
+    <h2>Signup</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required><br>
+        <input type="email" name="email" placeholder="Email" required><br>
+        <input type="password" name="password1" placeholder="Password" required><br>
+        <input type="password" name="password2" placeholder="Confirm Password" required><br>
+        <button type="submit">Signup</button>
+    </form>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+</body>
+</html>
