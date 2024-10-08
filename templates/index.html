@@ -19,15 +19,15 @@
     }
     .bar{
         display: grid;
-        grid-template-columns: 10% 65% 25%;
+        grid-template-columns: 15% 60% 25%;
         /* margin: auto; */
-        width: 80%;
+        width: 90%;
         align-items: center;
         margin: auto;
     }
     .bar .logo-section{
         color: rgb(85, 163, 32);
-        font-size: 3rem;
+        font-size: 2.4rem;
         font-weight: bolder;
     }
     .nav-links ul{
@@ -68,7 +68,7 @@
     <section class="navbar">
         <div class="bar">
             <div class="logo-section">
-                Travello
+                TripInsight
             </div>
             <div class="nav-links">
                 <ul>
@@ -80,14 +80,18 @@
             </div>
             <div class="buttons">
                 <ul>
+                    {% if request.user.is_authenticated %}
+                   {{user.username}}
+                    {% else %}
                     <li><a href="signup">Signup</a></li>
+                    {% endif %}
                     <li><a href="">Contact</a></li>
                 </ul>
             </div>
         </div>
     </section>
-    <h2>Best Places</h2>
-    <h3>Welcome {{user.username}}!</h3>
+    {% comment %} <h2>Best Places</h2>
+    <h3>Welcome {{user.username}}!</h3> {% endcomment %}
     <form method="get" action="search">
         <input type="text" name="q" placeholder="Enter your search" value="{{ query }}">
         <button type="submit">Search</button>
