@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate, login, logout
 def index(request):
     user = request.user
     places = PlaceMode.objects.all()
-    return render(request, 'index.html', {"places" : places, 'user': user})
+    return render(request, 'index.html', {"places" : places[0: 10], 'user': user})
 
 def details(request, pk):
     place = PlaceMode.objects.get(id=pk)
@@ -32,14 +32,12 @@ def details(request, pk):
 def search_view(request):
     query = request.GET.get('q')
     results = []
-
     if query:
         results = PlaceMode.objects.filter(
             models.Q(Name__icontains=query) |
             models.Q(City__icontains=query) |
             models.Q(Significance__icontains=query)
         )
-
     return render(request, 'search.html', {'places': results, 'query': query})
 
 
@@ -56,7 +54,6 @@ def signup_view(request):
             return redirect('login')
         else:
             return render(request, 'signup.html', {'error': 'Passwords do not match'})
-    
     return render(request, 'signup.html')
 
 # Login View
