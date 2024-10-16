@@ -11,3 +11,4 @@ class customer_list(resources.ModelResource):
 class UserAdmin(ImportExportModelAdmin):
     resource_class = customer_list
 admin.site.register(PlaceMode, UserAdmin)
+admin.site.register(CrowdModel)

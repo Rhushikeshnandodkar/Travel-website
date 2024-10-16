@@ -32,7 +32,16 @@ class Profile(models.Model):
         return self.user.username
 
 class CrowdModel(models.Model):
-    pass
+    location = models.ForeignKey(PlaceMode, on_delete=models.CASCADE, null=True, blank=True) 
+    month = models.IntegerField(null=True, blank=True)  
+    crowd_count = models.IntegerField(null=True, blank=True)  
+    month_name = models.CharField(max_length=200, null=True, blank=True)
+
+    class Meta:
+        unique_together = ('location', 'month')  # Ensure unique crowd data for each month/year and location
+
+    def __str__(self):
+        return f"Crowd data for {self.location}"
     
 
 

@@ -27,7 +27,9 @@ def details(request, pk):
     recommended_places = []
     for i in places_list:
         recommended_places.append(PlaceMode.objects.get(id=i[0]))
-    return render(request, 'details.html', {"rec_places" : recommended_places, 'single_place' : place})
+    crowd_data = CrowdModel.objects.filter(location=place)
+    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Augast', 'September', 'October', 'November', 'December']
+    return render(request, 'details.html', {"rec_places" : recommended_places, 'single_place' : place, 'crowd_data' : crowd_data, 'months': months})
 
 def search_view(request):
     query = request.GET.get('q')
@@ -39,7 +41,6 @@ def search_view(request):
             models.Q(Significance__icontains=query)
         )
     return render(request, 'search.html', {'places': results, 'query': query})
-
 
 def signup_view(request):
     if request.method == 'POST':
@@ -75,3 +76,4 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+

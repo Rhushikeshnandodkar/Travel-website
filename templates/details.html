@@ -4,6 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        /* Heatmap grid styles */
+        .heatmap {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr); /* 12 columns for 12 months */
+            gap: 5px;
+        }
+
+        .heatmap div {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            border-radius: 4px;
+        }
+
+        /* CSS classes for crowd intensity */
+        .light-box {
+            background-color: lightgreen;
+            width: 30px;
+            height: 30px;
+        }
+
+        .medium-box {
+            background-color: orange;
+            width: 30px;
+            height: 30px;
+        }
+
+        .medium2-box {
+            background-color: red;
+            width: 30px;
+            height: 30px;
+        }
+
+        .large-box {
+            background-color: darkred;
+            width: 30px;
+            height: 30px;
+        }
+    </style>
 </head>
 <body>
     <h3>{{single_place.Name}}</h3>
@@ -13,5 +57,23 @@
             <li>{{i.Name}}</li>
         {% endfor %}
     </ul>
+    {% for i in crowd_data %}
+    <h3>{{ i.month_name }}</h3>
+        <div class="heatmap">
+            {% if i.crowd_count == 1 %}
+            <div class="light-box">
+            {% elif i.crowd_count == 2 %}
+            <div class="medium-box">
+            {% elif i.crowd_count == 3 %}
+            <div class="medium2-box">
+            {% elif i.crowd_count == 4%}
+            <div class="large-box">
+            {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+    <div class="heatmap" id="heatmap"></div>
+
+
 </body>
 </html>
