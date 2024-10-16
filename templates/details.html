@@ -3,49 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./index.css">
     <title>Document</title>
     <style>
         /* Heatmap grid styles */
-        .heatmap {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr); /* 12 columns for 12 months */
-            gap: 5px;
-        }
-
-        .heatmap div {
-            width: 60px;
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            color: white;
-            border-radius: 4px;
-        }
-
+     
+        * {
+  font-family: "Afacad Flux", sans-serif;
+  box-sizing: border-box;
+}
+       
         /* CSS classes for crowd intensity */
         .light-box {
-            background-color: lightgreen;
-            width: 30px;
-            height: 30px;
+            background-color: rgba(255, 0, 0, 0.19);
         }
-
         .medium-box {
-            background-color: orange;
-            width: 30px;
-            height: 30px;
+            background-color: rgba(255, 0, 0, 0.386);
         }
-
         .medium2-box {
-            background-color: red;
-            width: 30px;
-            height: 30px;
+            background-color: rgba(255, 0, 0, 0.665);
         }
-
         .large-box {
-            background-color: darkred;
-            width: 30px;
-            height: 30px;
+            background-color: rgba(255, 0, 0, 0.791);
+        }
+        .heatmap-box{
+            display: flex;
+            width: 90%;
+            margin: auto;
+            background-color: rgba(128, 128, 128, 0.113);
+            border: 1px solid rgba(128, 128, 128, 0.438);
+            justify-content: space-evenly;
+            padding: 20px;
+        }
+        .heat-box{
+            width: 50px;
+            height: 50px;
+        }
+        .heatmap{
+            width: 60px;
+            height: 120px;
+            /* padding: 20px; */
+        }
+        .heatmap h3{
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 400;
         }
     </style>
 </head>
@@ -57,21 +62,25 @@
             <li>{{i.Name}}</li>
         {% endfor %}
     </ul>
+
+    <h1>Crowd Heatmap</h1>
+    <div class="heatmap-box">
     {% for i in crowd_data %}
-    <h3>{{ i.month_name }}</h3>
-        <div class="heatmap">
+    <div class="heatmap">
+            <h3>{{ i.month_name }}</h3>
             {% if i.crowd_count == 1 %}
-            <div class="light-box">
+            <div class="heat-box light-box"> </div>
             {% elif i.crowd_count == 2 %}
-            <div class="medium-box">
+            <div class="heat-box medium-box"></div>
             {% elif i.crowd_count == 3 %}
-            <div class="medium2-box">
+            <div class="heat-box medium2-box"></div>
             {% elif i.crowd_count == 4%}
-            <div class="large-box">
+            <div class="heat-box large-box"></div>
             {% endif %}
             </div>
+            {% endfor %}
         </div>
-    {% endfor %}
+    </div>
     <div class="heatmap" id="heatmap"></div>
 
 
