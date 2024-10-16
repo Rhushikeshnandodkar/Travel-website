@@ -41,7 +41,7 @@ class CrowdModel(models.Model):
         unique_together = ('location', 'month')  # Ensure unique crowd data for each month/year and location
 
     def __str__(self):
-        return f"Crowd data for {self.location}"
+        return f"Crowd data for {self.location} in {self.month_name}" 
     
 
 
