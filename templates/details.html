@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="{% static 'css/details.css' %}">
     <title>Document</title>
     <style>
         /* Heatmap grid styles */
@@ -55,34 +56,257 @@
     </style>
 </head>
 <body>
-    <h3>{{single_place.Name}}</h3>
-    <h4>recommended places</h4>
-    <ul>
-        {% for i in rec_places %}
-            <li>{{i.Name}}</li>
-        {% endfor %}
-    </ul>
-
-    <h1>Crowd Heatmap</h1>
-    <div class="heatmap-box">
-    {% for i in crowd_data %}
-    <div class="heatmap">
-            <h3>{{ i.month_name }}</h3>
-            {% if i.crowd_count == 1 %}
-            <div class="heat-box light-box"> </div>
-            {% elif i.crowd_count == 2 %}
-            <div class="heat-box medium-box"></div>
-            {% elif i.crowd_count == 3 %}
-            <div class="heat-box medium2-box"></div>
-            {% elif i.crowd_count == 4%}
-            <div class="heat-box large-box"></div>
-            {% endif %}
+   
+    <section class="container">
+        <div class="header">
+            <h1>{{single_place.Name}}</h1>
+            <div class="review">
+                <div class="rating">★★★★☆</div>
+                <span>18,842 reviews</span> · <a href="#">#4 of 477 things to do in Honolulu</a> · Beaches
             </div>
-            {% endfor %}
+            <a href="#" class="write-review">Write a review</a>
         </div>
-    </div>
-    <div class="heatmap" id="heatmap"></div>
+
+        <div class="content">
+            <div class="description">
+                <h2>About</h2>
+                <p>
+                    This iconic landmark in Waikiki is one of Hawaii’s most famous beaches, located on the south shore
+                    of Oahu. Waikiki Beach is the birthplace of modern surfing culture—look out for the statue of
+                    renowned waterman Duke Kahanamoku, who popularized the sport internationally...
+                    <a href="#" class="read-more">Read more</a>
+                </p>
+                <div class="suggest-edits">
+                    <a href="#">Suggest edits to improve what we show</a> · <a href="#">Improve this listing</a>
+                </div>
+                <div class="tours">
+                    <h3>Tours & experiences</h3>
+                    <p>Explore different ways to experience this place.</p>
+                    <button>See options</button>
+                </div>
+            </div>
+
+            <div class="image-gallery">
+                <img src="{{single_place.Image_url}}" alt="Waikiki Beach">
+                {% comment %} <div class="gallery-thumbnails">
+                    <img src="https://via.placeholder.com/100" alt="Thumbnail">
+                    <img src="https://via.placeholder.com/100" alt="Thumbnail">
+                    <img src="https://via.placeholder.com/100" alt="Thumbnail">
+                    <img src="https://via.placeholder.com/100" alt="Thumbnail">
+                    <img src="https://via.placeholder.com/100" alt="Thumbnail">
+                </div> {% endcomment %}
+            </div>
+        </div>
+        </div>
 
 
+        <section class="nearby-container">
+            <h2>The area</h2>
+            <p><strong>Neighbourhood:</strong> Waikiki</p>
+            <div class="nearby-contact-links">
+                <a href="#">Visit website</a> · <a href="#">Call</a>
+            </div>
+            <div class="nearby-content">
+                <div class="nearby-places">
+                    <div class="nearby-list">
+                        <h4>Attractions</h4>
+                        <ul>
+                            {% for i in rec_places %}
+                            <li>
+                                <img src="{{i.Image_url}}" alt="Attraction Image">
+                                <div class="nearby-info">
+                                    <strong>{{i.Name}}</strong>
+                                    {{i.Google_rating}} reviews · {{i.Significance}}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% comment %} <a href="#">See all</a> {% endcomment %}
+                    </div>
+                </div>
+                <div class="nearby-map">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6242.342315625882!2d77.2437357872661!3d28.58789027509748!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce31ce8460ba7%3A0xb9f1ba2d3bdfa80d!2sHumayun%E2%80%99s%20Tomb!5e0!3m2!1sen!2sin!4v1729094725758!5m2!1sen!2sin"
+                        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <section class="heatmap-container">
+            <div class="heatmap-container">
+                <h1>Monthly Visit Heatmap</h1>
+                {% for i in crowd_data %}
+                {% if i.crowd_count == 1 %}
+                <div class="month-box" data-count="50">
+                    <div class="box"></div>
+                    <p>{{i.month_name}}</p>
+                </div>
+                {% elif i.crowd_count == 2 %}
+                <div class="month-box" data-count="80">
+                    <div class="box"></div>
+                    <p>{{i.month_name}}</p>
+                </div>
+                {% elif i.crowd_count == 3 %}
+                <div class="month-box" data-count="90">
+                    <div class="box"></div>
+                    <p>{{i.month_name}}</p>
+                </div>
+                {% elif i.crowd_count == 4%}
+                <div class="month-box" data-count="100">
+                    <div class="box"></div>
+                    <p>{{i.month_name}}</p>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="review-section">
+            <div class="header">
+                <h2>Reviews</h2>
+                <div class="rating-summary">
+                    4.5
+                </div>
+            </div>
+
+            <div class="reviews">
+                <div class="total-reviews">
+                    <span>20,838 reviews</span>
+                </div>
+            </div>
+
+            <div class="rating-breakdown">
+                <div class="rating-bar">
+                    <span>Excellent</span>
+                    <div class="bar">
+                        <div class="bar-filled" style="width: 80%;"></div>
+                    </div>
+                    <span>13,789</span>
+                </div>
+                <div class="rating-bar">
+                    <span>Very good</span>
+                    <div class="bar">
+                        <div class="bar-filled" style="width: 60%;"></div>
+                    </div>
+                    <span>4,775</span>
+                </div>
+                <div class="rating-bar">
+                    <span>Average</span>
+                    <div class="bar">
+                        <div class="bar-filled" style="width: 30%;"></div>
+                    </div>
+                    <span>1,497</span>
+                </div>
+                <div class="rating-bar">
+                    <span>Poor</span>
+                    <div class="bar">
+                        <div class="bar-filled" style="width: 10%;"></div>
+                    </div>
+                    <span>427</span>
+                </div>
+                <div class="rating-bar">
+                    <span>Terrible</span>
+                    <div class="bar">
+                        <div class="bar-filled" style="width: 5%;"></div>
+                    </div>
+                    <span>350</span>
+                </div>
+            </div>
+            <div class="popular-mentions">
+                <h3>Popular mentions</h3>
+                <div class="mentions-list">
+                    
+                    <div class="mention">{{single_place.City}}</div>
+                    <div class="mention">{{single_place.Significance}}</div>
+                    <div class="mention">{{single_place.Type}}</div>
+                    <div class="mention">{{single_place.Zone}}</div>
+                    {% comment %} <div class="mention">sea weed</div>
+                    <div class="mention">every morning</div> {% endcomment %}
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="comment">
+                <div class="comment-header">
+                    <div class="comment-user-info">
+                        <img src="user1.png" alt="User Avatar" class="comment-avatar">
+                        <div>
+                            <h4>Adventurers11805</h4>
+                            <p>Charlotte, NC • 226 contributions</p>
+                        </div>
+                    </div>
+                    <div class="comment-rating">
+                        <span class="comment-circle comment-green"></span>
+                        <span class="comment-circle comment-green"></span>
+                        <span class="comment-circle comment-green"></span>
+                        <span class="comment-circle comment-gray"></span>
+                        <span class="comment-circle comment-gray"></span>
+                    </div>
+                </div>
+                <div class="comment-content">
+                    <h3>Waikiki is too crowded</h3>
+                    <p><strong>Oct 2024 • Couples</strong></p>
+                    <p>This will be my last visit to Waikiki and Honolulu. This city has pretty awful traffic ever day
+                        from early morning til late night. Wherever you drive you will get into a traffic backup.
+                        Waikiki is terribly crowded even in the off season. The other islands have great uncrowded
+                        beaches.</p>
+                    <p class="comment-date">Written 6 October 2024</p>
+                </div>
+            </div>
+
+            <div class="comment">
+                <div class="comment-header">
+                    <div class="comment-user-info">
+                        <img src="user2.png" alt="User Avatar" class="comment-avatar">
+                        <div>
+                            <h4>Peter A</h4>
+                            <p>Sydney, Australia • 48 contributions</p>
+                        </div>
+                    </div>
+                    <div class="comment-rating">
+                        <span class="comment-circle comment-green"></span>
+                        <span class="comment-circle comment-green"></span>
+                        <span class="comment-circle comment-green"></span>
+                        <span class="comment-circle comment-green"></span>
+                        <span class="comment-circle comment-green"></span>
+                    </div>
+                </div>
+                <div class="comment-content">
+                    <h3>Amazing beach</h3>
+                    <p><strong>Oct 2024 • Couples</strong></p>
+                    <p>Beautiful beach.. All the facilities you need, you can hire all the normal bits and pieces. The
+                        upper end near the Hilton was a lot quieter than down near the Duke statue.</p>
+                    <p class="comment-date">Written 6 October 2024</p>
+                </div>
+            </div>
+
+            <div class="comment">
+                <div class="comment-header">
+                    <div class="comment-user-info">
+                        <img src="user2.png" alt="User Avatar" class="comment-avatar">
+                        <div>
+                            <h4>Peter A</h4>
+                            <p>Sydney, Australia • 48 contributions</p>
+                        </div>
+                    </div>
+                    <div class="comment-rating">
+                        <span class="comment-circle comment-green"></span>
+                        <span class="comment-circle comment-green"></span>
+                        <span class="comment-circle comment-green"></span>
+                        <span class="comment-circle comment-green"></span>
+                        <span class="comment-circle comment-green"></span>
+                    </div>
+                </div>
+                <div class="comment-content">
+                    <h3>Amazing beach</h3>
+                    <p><strong>Oct 2024 • Couples</strong></p>
+                    <p>Beautiful beach.. All the facilities you need, you can hire all the normal bits and pieces. The
+                        upper end near the Hilton was a lot quieter than down near the Duke statue.</p>
+                    <p class="comment-date">Written 6 October 2024</p>
+                </div>
+            </div>
+        </section>
 </body>
 </html>

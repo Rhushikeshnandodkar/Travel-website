@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate, login, logout
 def index(request):
     user = request.user
     places = PlaceMode.objects.all()
-    return render(request, 'index.html', {"places" : places[0: 10], 'user': user})
+    return render(request, 'index.html', {"places" : places[0: 5], 'user': user})
 
 def details(request, pk):
     place = PlaceMode.objects.get(id=pk)
@@ -23,7 +23,7 @@ def details(request, pk):
     name = place.Name
     place_index = place_dict[place_dict['Name'] == name].index[0]
     distances = similarity[place_index]
-    places_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x : x[1])[1:15]
+    places_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x : x[1])[1:7]
     recommended_places = []
     for i in places_list:
         recommended_places.append(PlaceMode.objects.get(id=i[0]))
