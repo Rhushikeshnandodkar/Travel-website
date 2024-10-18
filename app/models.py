@@ -44,8 +44,16 @@ class CrowdModel(models.Model):
         return f"Crowd data for {self.location} in {self.month_name}" 
     
 
+class ReviewModel(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    place = models.ForeignKey(PlaceMode, on_delete=models.CASCADE, null=True, blank=True)
+    review_text = models.CharField(max_length=50, null=True, blank=True)
+    review_description = models.TextField(null=True, blank=True)
+    date = models.DateField(auto_now_add=True)
+    time = models.TimeField(auto_now_add=True)
+    rating = models.IntegerField(null=True, blank=True)
 
-
-
+    def __str__(self):
+        return f"user {self.user.username}'s review to {self.place.Name}"
 
    

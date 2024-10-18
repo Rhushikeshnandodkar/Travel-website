@@ -28,8 +28,10 @@ def details(request, pk):
     for i in places_list:
         recommended_places.append(PlaceMode.objects.get(id=i[0]))
     crowd_data = CrowdModel.objects.filter(location=place)
+    review = ReviewModel.objects.filter(place=pk)
+    print(review)
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Augast', 'September', 'October', 'November', 'December']
-    return render(request, 'details.html', {"rec_places" : recommended_places, 'single_place' : place, 'crowd_data' : crowd_data, 'months': months})
+    return render(request, 'details.html', {"rec_places" : recommended_places, 'single_place' : place, 'crowd_data' : crowd_data, 'months': months, 'reviews': review})
 
 def search_view(request):
     query = request.GET.get('q')

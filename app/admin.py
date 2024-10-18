@@ -29,3 +29,4 @@ class crowd_data(resources.ModelResource):
 class CrowdAdmin(ImportExportModelAdmin):
     resource_class = crowd_data
 admin.site.register(CrowdModel, CrowdAdmin)
+admin.site.register(ReviewModel)

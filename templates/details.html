@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_filters %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -162,7 +163,7 @@
             </div>
         </section>
 
-        <section class="review-section">
+        {% comment %} <section class="review-section">
             <div class="header">
                 <h2>Reviews</h2>
                 <div class="rating-summary">
@@ -174,9 +175,9 @@
                 <div class="total-reviews">
                     <span>20,838 reviews</span>
                 </div>
-            </div>
+            </div> {% endcomment %}
 
-            <div class="rating-breakdown">
+            {% comment %} <div class="rating-breakdown">
                 <div class="rating-bar">
                     <span>Excellent</span>
                     <div class="bar">
@@ -212,7 +213,7 @@
                     </div>
                     <span>350</span>
                 </div>
-            </div>
+            </div> {% endcomment %}
             <div class="popular-mentions">
                 <h3>Popular mentions</h3>
                 <div class="mentions-list">
@@ -228,85 +229,35 @@
         </section>
 
         <section>
+           
+            {% for i in reviews %}
             <div class="comment">
                 <div class="comment-header">
                     <div class="comment-user-info">
-                        <img src="user1.png" alt="User Avatar" class="comment-avatar">
+                        {% comment %} <img src="user2.png" alt="User Avatar" class="comment-avatar"> {% endcomment %}
                         <div>
-                            <h4>Adventurers11805</h4>
-                            <p>Charlotte, NC • 226 contributions</p>
+                            <h4>{{i.user.username}}</h4>
+                            {% comment %} <p>Sydney, Australia • 48 contributions</p> {% endcomment %}
                         </div>
                     </div>
                     <div class="comment-rating">
+                        {% for j in i.rating|times %}
+                        <span class="comment-circle comment-green"></span>
+                        {% endfor %}
+                        {% comment %} <span class="comment-circle comment-green"></span>
                         <span class="comment-circle comment-green"></span>
                         <span class="comment-circle comment-green"></span>
-                        <span class="comment-circle comment-green"></span>
-                        <span class="comment-circle comment-gray"></span>
-                        <span class="comment-circle comment-gray"></span>
+                        <span class="comment-circle comment-green"></span> {% endcomment %}
                     </div>
                 </div>
                 <div class="comment-content">
-                    <h3>Waikiki is too crowded</h3>
-                    <p><strong>Oct 2024 • Couples</strong></p>
-                    <p>This will be my last visit to Waikiki and Honolulu. This city has pretty awful traffic ever day
-                        from early morning til late night. Wherever you drive you will get into a traffic backup.
-                        Waikiki is terribly crowded even in the off season. The other islands have great uncrowded
-                        beaches.</p>
-                    <p class="comment-date">Written 6 October 2024</p>
+                    <h3>{{i.review_text}}</h3>
+                    {% comment %} <p><strong>Oct 2024 • Couples</strong></p> {% endcomment %}
+                    <p>{{i.review_description}}</p>
+                    <p class="comment-date">Written on {{i.date}} </p>
                 </div>
             </div>
-
-            <div class="comment">
-                <div class="comment-header">
-                    <div class="comment-user-info">
-                        <img src="user2.png" alt="User Avatar" class="comment-avatar">
-                        <div>
-                            <h4>Peter A</h4>
-                            <p>Sydney, Australia • 48 contributions</p>
-                        </div>
-                    </div>
-                    <div class="comment-rating">
-                        <span class="comment-circle comment-green"></span>
-                        <span class="comment-circle comment-green"></span>
-                        <span class="comment-circle comment-green"></span>
-                        <span class="comment-circle comment-green"></span>
-                        <span class="comment-circle comment-green"></span>
-                    </div>
-                </div>
-                <div class="comment-content">
-                    <h3>Amazing beach</h3>
-                    <p><strong>Oct 2024 • Couples</strong></p>
-                    <p>Beautiful beach.. All the facilities you need, you can hire all the normal bits and pieces. The
-                        upper end near the Hilton was a lot quieter than down near the Duke statue.</p>
-                    <p class="comment-date">Written 6 October 2024</p>
-                </div>
-            </div>
-
-            <div class="comment">
-                <div class="comment-header">
-                    <div class="comment-user-info">
-                        <img src="user2.png" alt="User Avatar" class="comment-avatar">
-                        <div>
-                            <h4>Peter A</h4>
-                            <p>Sydney, Australia • 48 contributions</p>
-                        </div>
-                    </div>
-                    <div class="comment-rating">
-                        <span class="comment-circle comment-green"></span>
-                        <span class="comment-circle comment-green"></span>
-                        <span class="comment-circle comment-green"></span>
-                        <span class="comment-circle comment-green"></span>
-                        <span class="comment-circle comment-green"></span>
-                    </div>
-                </div>
-                <div class="comment-content">
-                    <h3>Amazing beach</h3>
-                    <p><strong>Oct 2024 • Couples</strong></p>
-                    <p>Beautiful beach.. All the facilities you need, you can hire all the normal bits and pieces. The
-                        upper end near the Hilton was a lot quieter than down near the Duke statue.</p>
-                    <p class="comment-date">Written 6 October 2024</p>
-                </div>
-            </div>
+            {% endfor %}
         </section>
 </body>
 </html>
