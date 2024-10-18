@@ -56,4 +56,3 @@ class ReviewModel(models.Model):
     def __str__(self):
         return f"user {self.user.username}'s review to {self.place.Name}"
 
-   
