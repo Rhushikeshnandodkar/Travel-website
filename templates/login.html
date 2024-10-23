@@ -1,23 +1,4 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-    {% comment %} <link rel="stylesheet" href="{% static 'your_css_file.css' %}"> {% endcomment %}
-</head>
-<body>
-    <h2>Login</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Username" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
-        <button type="submit">Login</button>
-    </form>
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
-
-
-    <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -115,6 +96,48 @@
             margin-top: 10px;
             color: #6c757d;
         }
+
+    
+        ul.messages {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        ul.messages li {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        /* Success message styling */
+        ul.messages li.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        /* Error message styling */
+        ul.messages li.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        /* Info message styling */
+        ul.messages li.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        /* Warning message styling */
+        ul.messages li.warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        
     </style>
 </head>
 
@@ -123,6 +146,15 @@
         <h1>Welcome back</h1>
         <form method="POST">
             {% csrf_token %}
+
+            {% if messages %}
+                <ul class="messages">
+                {% for message in messages %}
+                 <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+                 </ul>
+            {% endif %}
+
             <div class="input-group">
                 <label for="email">Username</label>
                 <input type="text" name="username" placeholder="Username" required>
@@ -134,7 +166,7 @@
             <a href="#" class="forgot-password">Forgot password?</a>
             <button type="submit">Log in</button>
         </form>
-        <p>Not a member? <a href="#">Join now</a></p>
+        <p>Not a member? <a href="/signup">Join now</a></p>
         <div class="footer">
             <a href="#">Terms Of Service</a> | <a href="#">Privacy Statement</a>
             <p>This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.</p>

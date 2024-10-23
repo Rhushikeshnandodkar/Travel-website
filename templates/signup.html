@@ -1,21 +1,156 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Signup</title>
-    {% comment %} <link rel="stylesheet" href="{% static 'your_css_file.css' %}"> {% endcomment %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap" rel="stylesheet">
+    <title>Register</title>
+    <style>
+        * {
+            font-family: "Afacad Flux", sans-serif;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        body {
+            height: 100vh;
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .signup-form {
+            
+            width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type=text],
+        input[type=password],
+        input[type=email] {
+            width: calc(100%);
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #f2f2f2;
+        }
+
+        h2{
+            text-align: center;
+        }
+
+        button {
+            margin-top: 16px;
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            background-color: green;
+            color: white;
+            font-size: 16px;
+        }
+
+        a {
+            text-decoration: none;
+            color: blue;
+        }
+
+        .small-text {
+            font-size: 0.8em;
+            color: gray;
+            text-align: center;
+        }
+/* styles.css */
+ul.messages {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul.messages li {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Success message styling */
+ul.messages li.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Error message styling */
+ul.messages li.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Info message styling */
+ul.messages li.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* Warning message styling */
+ul.messages li.warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+    </style>
 </head>
+
 <body>
-    <h2>Signup</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Username" required><br>
-        <input type="email" name="email" placeholder="Email" required><br>
-        <input type="password" name="password1" placeholder="Password" required><br>
-        <input type="password" name="password2" placeholder="Confirm Password" required><br>
-        <button type="submit">Signup</button>
-    </form>
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
+    <div class="signup-form">
+        <h2>Register Join to unlock the best of TripInsigths</h2>
+        <form method="POST">
+            {% csrf_token %}
+
+            
+            {% if messages %}
+                <ul class="messages">
+                {% for message in messages %}
+                 <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+                 </ul>
+            {% endif %}
+
+
+            <label for="first-name">First Name</label><br>
+            <input type="text" id="first-name" name="username"><br>
+
+            <label for="last-name">Email</label><br>
+            <input type="email" id="last-name" name="email"><br>
+
+            <label for="password">Create a password</label><br>
+            <input type="password" id="password" name="password1"><br>
+
+            <label for="password">Type password again</label><br>
+            <input type="password" id="password" name="password2"><br>
+
+            <button type="submit">Signup</button>
+        </form>
+        <p class="small-text">By proceeding, you agree to our <a href="#">Terms of Use</a> and confirm you have read our
+            <a href="#">Privacy and Cookie Statement</a>.
+        </p>
+        <p class="small-text">This site is protected by reCAPTCHA and the Google <a href="#">Privacy Policy</a> and <a
+                href="#">Terms of Service</a> apply.</p>
+    </div>
 </body>
+
 </html>
