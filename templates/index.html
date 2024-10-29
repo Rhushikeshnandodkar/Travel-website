@@ -456,6 +456,10 @@ h1 {
     justify-content: center;
   }
 }
+.results-section a{
+  text-decoration: none;
+  color: black;
+}
 </style>
 
 <body>
@@ -474,8 +478,13 @@ h1 {
             </div>
             <div class="buttons">
                 <ul>
-                    <li><a href="signup">Signup</a></li>
-                    <li><a href="">Contact</a></li>
+                  {% if user.is_authenticated %}
+                  
+                  <li><a href="signup">Profile</a></li>
+                  {% else %}
+                  <li><a href="signup">Signup</a></li>
+                  <li><a href="">Contact</a></li>
+                  {% endif %}
                 </ul>
             </div>
         </div>
@@ -496,7 +505,7 @@ h1 {
 
 
     <section class="results-container">
-        <aside class="filter-sidebar">
+        {% comment %} <aside class="filter-sidebar">
             <h3>Filter Results</h3>
             <ul class="filter-list">
                 <li><a href="#" class="active">All Results</a></li>
@@ -506,25 +515,27 @@ h1 {
                 <li><a href="#">Destinations</a></li>
                 <li><a href="#">Holiday Rentals</a></li>
             </ul>
-        </aside>
+        </aside> {% endcomment %}
 
         <section class="results-section">
-            <p class="location-warning">We are unable to determine your location. For better results, enable location
-                permissions. Showing worldwide results.</p>
+            {% comment %} <p class="location-warning">We are unable to determine your location. For better results, enable location
+                permissions. Showing worldwide results.</p> {% endcomment %}
             <h2>Welcome To TripInsight</h2>
             {% for i in places %}
+           <a href="details/{{i.id}}">
             <div class="result-card">
-                <!-- <p>{{i.Image_url}}</p> -->
-                <img src='{{ i.Image_url }}' alt="Waikiki Beach">
-                <div class="card-details">
-                    <span class="badge">Things to Do</span>
-                    <h3>{{i.Name}}</h3>
-                    <p class="reviews">{{i.State}}</p>
-                    <p class="location">{{i.City}}</p>
-                    <p class="mentions"><strong>Google Rating</strong> of <strong>{{i.Google_rating}}</strong></p>
-                    <p class="quote">{{ i.Description|truncatechars:160 }}</p>
-                </div>
-            </div>
+              <!-- <p>{{i.Image_url}}</p> -->
+              <img src='{{ i.Image_url }}' alt="Waikiki Beach">
+              <div class="card-details">
+                  <span class="badge">Things to Do</span>
+                  <h3>{{i.Name}}</h3>
+                  <p class="reviews">{{i.State}}</p>
+                  <p class="location">{{i.City}}</p>
+                  <p class="mentions"><strong>Google Rating</strong> of <strong>{{i.Google_rating}}</strong></p>
+                  <p class="quote">{{ i.Description|truncatechars:160 }}</p>
+              </div>
+          </div>
+           </a>
             {% endfor %}
 
             <div class="result-card">
