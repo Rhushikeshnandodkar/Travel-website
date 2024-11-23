@@ -259,5 +259,65 @@
             </div>
             {% endfor %}
         </section>
+
+        <h1>Travel Cost Estimator</h1>
+        <p>Destination: Pune</p>
+        <button onclick="estimateTravelCost('{{ single_place.Name }}')">Estimate Cost</button>
+        <p id="cost-display">Travel cost will be displayed here.</p>
 </body>
+<script>
+    function getCurrentLocation(callback){
+        if (navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(
+                (postion) => {
+                    const latitude = postion.coords.latitude
+                    const longitude = postion.coords.longitude
+                    callback({lat: latitude, lng: longitude})
+                },
+                (error) => {
+                    console.error(error.message)
+                    alert("Unable to fetch your location. Please allow location access.");
+                }
+            )
+        }else{
+            alert("Geolocation is not supported by your browser.");
+        }
+    }
+
+    function estimateTravelCost(destination){
+        getCurrentLocation((currentLocation) => {
+            console.log("clikc")
+            fetch('/estimate-cost/', {
+                method : 'POST',
+                headers : {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}", // Ensure CSRF token is included       
+                },
+                body : JSON.stringify({
+                    origin : `${currentLocation.lat},${currentLocation.lng}`,
+                    destination : destination
+                })
+            })
+            .then((response) => response.json())
+            .then((data) =>{
+                if(data.cost){
+                    document.getElementById('cost-display').innerText = `Estimated Travel Cost: ₹${data.cost}`;
+                }else{
+                    alert("Unable to calculate cost. Please try again.");
+                }
+            })
+            .catch((error) => {
+                        console.error("Error:", error);
+                        alert("Something went wrong. Please try again.");
+                    });
+        })
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const destination = "Pune"; // Set the destination dynamically
+        const mode = "car"; // Set the travel mode dynamically or allow user selection
+        // calculateTravelCost(destination, mode);
+        getCurrentLocation()
+    });
+</script>
 </html>

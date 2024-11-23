@@ -7,6 +7,10 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+import googlemaps
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 # Create your views here.
 
 def index(request):
@@ -85,4 +89,50 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+
+gmaps = googlemaps.Client(key="AIzaSyAyUAkmbw3LUmZy5w15DmMFaVh3x-utvHw")
+def get_distance(origin, destination):
+    """
+    Calculate the distance between two locations using Google Maps Distance Matrix API.
+    """
+    try:
+        result = gmaps.distance_matrix(origins=origin, destinations=destination, mode="driving")
+        element = result["rows"][0]["elements"][0]
+        if element["status"] == "OK":
+            distance = element["distance"]["value"]  # Distance in meters
+            return distance / 1000  # Convert to kilometers
+        else:
+            return None
+    except Exception as e:
+        print(f"Error fetching distance: {e}")
+        return None
+
+@csrf_exempt
+def estimate_cost(request):
+    """
+    API to estimate travel cost.
+    """
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            origin = data.get("origin")
+            destination = data.get("destination")
+
+            if not (origin and destination):
+                return JsonResponse({"error": "Invalid input"}, status=400)
+
+            # Calculate distance
+            distance = get_distance(origin, destination)
+            if distance is None:
+                return JsonResponse({"error": "Could not fetch distance"}, status=500)
+
+            # Calculate cost (example: ₹10 per km)
+            cost = distance * 10
+
+            return JsonResponse({"cost": cost})
+        except Exception as e:
+            print(f"Error in API: {e}")
+            return JsonResponse({"error": "Internal server error"}, status=500)
+    return JsonResponse({"error": "Invalid request method"}, status=405)
 
