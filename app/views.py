@@ -128,9 +128,11 @@ def estimate_cost(request):
                 return JsonResponse({"error": "Could not fetch distance"}, status=500)
 
             # Calculate cost (example: ₹10 per km)
-            cost = distance * 10
+            car_cost = distance * 10
+            train_cost = distance * 6
+            air_cost = distance * 14
 
-            return JsonResponse({"cost": cost})
+            return JsonResponse({"car_cost": int(car_cost), "train_cost" : int(train_cost), "air_cost" : int(air_cost)})
         except Exception as e:
             print(f"Error in API: {e}")
             return JsonResponse({"error": "Internal server error"}, status=500)

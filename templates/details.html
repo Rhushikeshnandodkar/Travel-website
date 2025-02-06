@@ -54,6 +54,61 @@
             font-size: 1rem;
             font-weight: 400;
         }
+        .travel-cost {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    font-family: Arial, sans-serif;
+}
+
+.travel-cost p {
+    font-size: 16px;
+    margin: 8px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.mode {
+    font-weight: bold;
+    color: #333;
+}
+
+.price {
+    font-weight: bold;
+    color: #007bff;
+}
+.estimate-button{
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 2%;
+    cursor: pointer;
+}
+.loader-container {
+    text-align: center;
+    padding: 20px;
+    font-size: 16px;
+    color: #555;
+}
+
+.loader {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #007bff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
     </style>
 </head>
 <body>
@@ -80,11 +135,10 @@
                 <div class="suggest-edits">
                     <a href="#">Suggest edits to improve what we show</a> · <a href="#">Improve this listing</a>
                 </div>
-                <div class="tours">
-                    <h3>Tours & experiences</h3>
-                    <p>Explore different ways to experience this place.</p>
-                    <button>See options</button>
-                </div>
+
+                  <h3>Travel Cost Estimator</h3>
+        <button class="estimate-button" onclick="estimateTravelCost('{{ single_place.Name }}')">Estimate Cost</button>
+        <p id="cost-display">Travel cost will be displayed here.</p>
             </div>
 
             <div class="image-gallery">
@@ -260,64 +314,134 @@
             {% endfor %}
         </section>
 
-        <h1>Travel Cost Estimator</h1>
-        <p>Destination: Pune</p>
-        <button onclick="estimateTravelCost('{{ single_place.Name }}')">Estimate Cost</button>
-        <p id="cost-display">Travel cost will be displayed here.</p>
+      
 </body>
 <script>
-    function getCurrentLocation(callback){
-        if (navigator.geolocation){
-            navigator.geolocation.getCurrentPosition(
-                (postion) => {
-                    const latitude = postion.coords.latitude
-                    const longitude = postion.coords.longitude
-                    callback({lat: latitude, lng: longitude})
-                },
-                (error) => {
-                    console.error(error.message)
-                    alert("Unable to fetch your location. Please allow location access.");
-                }
-            )
-        }else{
-            alert("Geolocation is not supported by your browser.");
-        }
-    }
+    // function getCurrentLocation(callback){
+    //     if (navigator.geolocation){
+    //         navigator.geolocation.getCurrentPosition(
+    //             (postion) => {
+    //                 const latitude = postion.coords.latitude
+    //                 const longitude = postion.coords.longitude
+    //                 callback({lat: latitude, lng: longitude})
+    //             },
+    //             (error) => {
+    //                 console.error(error.message)
+    //                 alert("Unable to fetch your location. Please allow location access.");
+    //             }
+    //         )
+    //     }else{
+    //         alert("Geolocation is not supported by your browser.");
+    //     }
+    // }
 
-    function estimateTravelCost(destination){
-        getCurrentLocation((currentLocation) => {
-            console.log("clikc")
-            fetch('/estimate-cost/', {
-                method : 'POST',
-                headers : {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": "{{ csrf_token }}", // Ensure CSRF token is included       
-                },
-                body : JSON.stringify({
-                    origin : `${currentLocation.lat},${currentLocation.lng}`,
-                    destination : destination
-                })
+    // function estimateTravelCost(destination){
+    //     getCurrentLocation((currentLocation) => {
+    //         console.log("clikc")
+    //         fetch('/estimate-cost/', {
+    //             method : 'POST',
+    //             headers : {
+    //                 "Content-Type": "application/json",
+    //                 "X-CSRFToken": "{{ csrf_token }}", // Ensure CSRF token is included       
+    //             },
+    //             body : JSON.stringify({
+    //                 origin : `${currentLocation.lat},${currentLocation.lng}`,
+    //                 destination : destination
+    //             })
+    //         })
+    //         .then((response) => response.json())
+    //         .then((data) =>{
+    //             if(data.car_cost && data.train_cost && data.air_cost){
+    //                 document.getElementById('cost-display').innerHTML = `<div class="travel-cost">
+    //     <p><span class="mode">🚗 Car:</span> <span class="price">₹${data.car_cost}</span></p>
+    //     <p><span class="mode">🚆 Train:</span> <span class="price">₹${data.train_cost}</span></p>
+    //     <p><span class="mode">✈️ Airplane:</span> <span class="price">₹${data.air_cost}</span></p>
+    // </div>`;
+
+    //             }else{
+    //                 alert("Unable to calculate cost. Please try again.");
+    //             }
+    //         })
+    //         .catch((error) => {
+    //                     console.error("Error:", error);
+    //                     alert("Something went wrong. Please try again.");
+    //                 });
+    //     })
+    // }
+
+    // document.addEventListener("DOMContentLoaded", () => {
+    //     const destination = "Pune"; // Set the destination dynamically
+    //     const mode = "car"; // Set the travel mode dynamically or allow user selection
+    //     // calculateTravelCost(destination, mode);
+    //     getCurrentLocation()
+    // });
+
+
+    function getCurrentLocation(callback) {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+                callback({ lat: latitude, lng: longitude });
+            },
+            (error) => {
+                console.error(error.message);
+                alert("Unable to fetch your location. Please allow location access.");
+            }
+        );
+    } else {
+        alert("Geolocation is not supported by your browser.");
+    }
+}
+
+function estimateTravelCost(destination) {
+    // Show loader
+    document.getElementById('cost-display').innerHTML = `
+        <div class="loader-container">
+            <div class="loader"></div>
+            <p>Calculating travel cost...</p>
+        </div>
+    `;
+
+    getCurrentLocation((currentLocation) => {
+        fetch('/estimate-cost/', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}", // Ensure CSRF token is included       
+            },
+            body: JSON.stringify({
+                origin: `${currentLocation.lat},${currentLocation.lng}`,
+                destination: destination
             })
-            .then((response) => response.json())
-            .then((data) =>{
-                if(data.cost){
-                    document.getElementById('cost-display').innerText = `Estimated Travel Cost: ₹${data.cost}`;
-                }else{
-                    alert("Unable to calculate cost. Please try again.");
-                }
-            })
-            .catch((error) => {
-                        console.error("Error:", error);
-                        alert("Something went wrong. Please try again.");
-                    });
         })
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-        const destination = "Pune"; // Set the destination dynamically
-        const mode = "car"; // Set the travel mode dynamically or allow user selection
-        // calculateTravelCost(destination, mode);
-        getCurrentLocation()
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.car_cost && data.train_cost && data.air_cost) {
+                // Hide loader and show results
+                document.getElementById('cost-display').innerHTML = `
+                    <div class="travel-cost">
+                        <p><span class="mode">🚗 Car:</span> <span class="price">₹${data.car_cost}</span></p>
+                        <p><span class="mode">🚆 Train:</span> <span class="price">₹${data.train_cost}</span></p>
+                        <p><span class="mode">✈️ Airplane:</span> <span class="price">₹${data.air_cost}</span></p>
+                    </div>
+                `;
+            } else {
+                document.getElementById('cost-display').innerHTML = "<p style='color:red;'>Unable to calculate cost. Please try again.</p>";
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+            document.getElementById('cost-display').innerHTML = "<p style='color:red;'>Something went wrong. Please try again.</p>";
+        });
     });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const destination = "{{single_place.Name}}"; // Set dynamically
+    estimateTravelCost(destination);
+});
+
 </script>
 </html>
